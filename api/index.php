@@ -2,13 +2,14 @@
 
 define('LARAVEL_START', microtime(true));
 
-// Ensure required writable storage paths exist in /tmp
+// Ensure required writable storage and bootstrap paths exist in /tmp
 $directories = [
     '/tmp/storage/framework/views',
     '/tmp/storage/framework/cache/data',
     '/tmp/storage/framework/sessions',
     '/tmp/storage/logs',
     '/tmp/storage/app',
+    '/tmp/bootstrap/cache',
 ];
 
 foreach ($directories as $dir) {
@@ -16,6 +17,12 @@ foreach ($directories as $dir) {
         mkdir($dir, 0755, true);
     }
 }
+
+// FORCE Laravel to write package manifests and discovery maps to the writable /tmp layer
+$_ENV['APP_PACKAGES_CACHE_PATH'] = '/tmp/bootstrap/cache/packages.php';
+$_ENV['APP_SERVICES_CACHE_PATH'] = '/tmp/bootstrap/cache/services.php';
+$_ENV['APP_CONFIG_CACHE_PATH'] = '/tmp/bootstrap/cache/config.php';
+$_ENV['APP_ROUTES_CACHE_PATH'] = '/tmp/bootstrap/cache/routes.php';
 
 try {
     // Register Composer's autoloader
@@ -42,7 +49,7 @@ try {
     // Catch the absolute root error before Laravel handles it
     header('Content-Type: text/plain', true, 500);
     echo "=========================================\n";
-    echo "   RAW SEVERLESS CRASH DETECTED         \n";
+    echo "   RAW SERVERLESS CRASH DETECTED         \n";
     echo "=========================================\n";
     echo "ERROR MESSAGE: " . $e->getMessage() . "\n\n";
     echo "FILE: " . $e->getFile() . "\n";
