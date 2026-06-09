@@ -19,12 +19,15 @@ class AppServiceProvider extends ServiceProvider
      */
     public function boot(): void
     {
-        $vPath = '/tmp/storage/framework/views';
-        
-        if (!is_dir($vPath)) {
-            mkdir($vPath, 0755, true);
+        // Configure the writable /tmp path for compiled theme views on Vercel
+        if (env('VERCEL_JOB_ID') || env('NOW_REGION')) {
+            $vPath = '/tmp/storage/framework/views';
+            
+            if (!is_dir($vPath)) {
+                mkdir($vPath, 0755, true);
+            }
+            
+            config(['view.compiled' => $vPath]);
         }
-        
-        config(['view.compiled' => $vPath]);
     }
 }
