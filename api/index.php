@@ -18,11 +18,16 @@ foreach ($directories as $dir) {
     }
 }
 
-// FORCE Laravel to write package manifests and discovery maps to the writable /tmp layer
+// FORCE Laravel to route framework tracking manifests into the writable /tmp volume
 $_ENV['APP_PACKAGES_CACHE_PATH'] = '/tmp/bootstrap/cache/packages.php';
 $_ENV['APP_SERVICES_CACHE_PATH'] = '/tmp/bootstrap/cache/services.php';
 $_ENV['APP_CONFIG_CACHE_PATH'] = '/tmp/bootstrap/cache/config.php';
 $_ENV['APP_ROUTES_CACHE_PATH'] = '/tmp/bootstrap/cache/routes.php';
+
+putenv('APP_PACKAGES_CACHE_PATH=/tmp/bootstrap/cache/packages.php');
+putenv('APP_SERVICES_CACHE_PATH=/tmp/bootstrap/cache/services.php');
+putenv('APP_CONFIG_CACHE_PATH=/tmp/bootstrap/cache/config.php');
+putenv('APP_ROUTES_CACHE_PATH=/tmp/bootstrap/cache/routes.php');
 
 try {
     // Register Composer's autoloader
