@@ -14,19 +14,20 @@ foreach ([
 
 require __DIR__ . '/../vendor/autoload.php';
 
+$app = require_once __DIR__ . '/../bootstrap/app.php';
+
+// Force register all core service providers
+$app->register(\Illuminate\View\ViewServiceProvider::class);
+$app->register(\Illuminate\Routing\RoutingServiceProvider::class);
+
 try {
-    $app = require_once __DIR__ . '/../bootstrap/app.php';
     $app->handleRequest(Illuminate\Http\Request::capture());
 } catch (\Throwable $e) {
     http_response_code(500);
     header('Content-Type: text/plain');
-    echo "PRIMARY ERROR:\n";
-    echo get_class($e) . "\n";
-    echo $e->getMessage() . "\n";
+    echo get_class($e) . "\n" . $e->getMessage() . "\n";
     echo "File: " . $e->getFile() . ":" . $e->getLine() . "\n";
-    echo "\nPrevious:\n";
     if ($e->getPrevious()) {
-        echo get_class($e->getPrevious()) . ": " . $e->getPrevious()->getMessage() . "\n";
+        echo "\nCaused by: " . $e->getPrevious()->getMessage();
     }
-    exit;
 }
