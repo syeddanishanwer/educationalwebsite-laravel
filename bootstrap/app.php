@@ -27,5 +27,16 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        // Standard production exception handling continues here cleanly
+        // Intercept and print the TRUE underlying crash natively
+        $exceptions->respond(function ($response, \Throwable $e) {
+            header('Content-Type: text/plain', true, 500);
+            echo "=========================================\n";
+            echo "   TRUE UNDERLYING CRASH CAPTURED        \n";
+            echo "=========================================\n";
+            echo "REAL ERROR MESSAGE: " . $e->getMessage() . "\n\n";
+            echo "FILE CAUSING CRASH: " . $e->getFile() . "\n";
+            echo "LINE NUMBER: " . $e->getLine() . "\n\n";
+            echo "STACK TRACE:\n" . $e->getTraceAsString() . "\n";
+            exit(1);
+        });
     })->create();
