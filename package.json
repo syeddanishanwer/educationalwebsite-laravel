@@ -5,7 +5,7 @@
     "scripts": {
         "build": "vite build",
         "dev": "vite",
-        "vercel-build": "chmod +x bootstrap/cache && php artisan package:discover --ansi"
+        "vercel-build": "php artisan config:clear && php artisan route:clear && php artisan view:clear && php artisan package:discover --ansi"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
