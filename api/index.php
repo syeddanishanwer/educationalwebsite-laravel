@@ -13,21 +13,16 @@ foreach ([
     if (!is_dir($dir)) mkdir($dir, 0775, true);
 }
 
+// Copy bootstrap cache to writable /tmp
+foreach (glob(__DIR__ . '/../bootstrap/cache/*.php') as $file) {
+    $dest = '/tmp/bootstrap/cache/' . basename($file);
+    if (!file_exists($dest)) copy($file, $dest);
+}
+
 require __DIR__ . '/../vendor/autoload.php';
 
 $app = require_once __DIR__ . '/../bootstrap/app.php';
 
 $app->useStoragePath('/tmp/storage');
 
-$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
-$request = Illuminate\Http\Request::capture();
-$response = $kernel->handle($request);
-
-// Force show response content regardless of status
-header('Content-Type: text/plain');
-http_response_code(200);
-echo "STATUS: " . $response->getStatusCode() . "\n\n";
-echo "CONTENT:\n";
-echo $response->getContent();
-
-$kernel->terminate($request, $response);
+$app->handleRequest(Illuminate\Http\Request::capture());
