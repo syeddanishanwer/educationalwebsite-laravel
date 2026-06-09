@@ -4,8 +4,7 @@
     "type": "module",
     "scripts": {
         "build": "vite build",
-        "dev": "vite",
-        "vercel-build": "php artisan config:clear && php artisan route:clear && php artisan view:clear && php artisan package:discover --ansi"
+        "dev": "vite"
     },
     "devDependencies": {
         "@tailwindcss/vite": "^4.0.0",
