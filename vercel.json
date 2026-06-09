@@ -7,10 +7,6 @@
     },
     "routes": [
         {
-            "src": "/test",
-            "dest": "/api/test.php"
-        },
-        {
             "src": "/build/(.*)",
             "dest": "/build/$1"
         },
