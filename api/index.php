@@ -2,21 +2,40 @@
 
 define('LARAVEL_START', microtime(true));
 
-foreach ([
+// Calculate the absolute application root path
+$appRoot = dirname(__DIR__);
+
+// Create writable directory frameworks in /tmp for the Vercel read-only system
+$directories = [
     '/tmp/storage/framework/views',
     '/tmp/storage/framework/cache/data',
     '/tmp/storage/framework/sessions',
     '/tmp/storage/logs',
     '/tmp/storage/app',
-    '/tmp/bootstrap/cache',
-] as $dir) {
-    if (!is_dir($dir)) mkdir($dir, 0775, true);
+];
+
+foreach ($directories as $dir) {
+    if (!is_dir($dir)) {
+        mkdir($dir, 0755, true);
+    }
 }
 
-require __DIR__ . '/../vendor/autoload.php';
+// Register the standard Composer automated script loader
+require $appRoot . '/vendor/autoload.php';
 
-$app = require_once __DIR__ . '/../bootstrap/app.php';
+// Instantiate and boot the native core Laravel Application instance
+$app = require_once $appRoot . '/bootstrap/app.php';
 
+// Dynamically bind the framework storage paths to the writable /tmp block
 $app->useStoragePath('/tmp/storage');
 
-$app->handleRequest(Illuminate\Http\Request::capture());
+// Handle the incoming web request through the standard HTTP kernel layer
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+
+$response = $kernel->handle(
+    $request = Illuminate\Http\Request::capture()
+);
+
+$response->send();
+
+$kernel->terminate($request, $response);
