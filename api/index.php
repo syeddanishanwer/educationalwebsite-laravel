@@ -1,7 +1,19 @@
-php<?php
+<?php
 
-// Set environment variables for Laravel
-$_ENV['APP_ENV'] = getenv('APP_ENV') ?: 'production';
+// Fixes for Vercel serverless environment
+define('LARAVEL_START', microtime(true));
 
-// Boot Laravel
-require __DIR__ . '/../public/index.php';
+// Fix working directory - critical for Vercel
+chdir(__DIR__ . '/../');
+
+require __DIR__ . '/../vendor/autoload.php';
+
+$app = require_once __DIR__ . '/../bootstrap/app.php';
+
+$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+
+$response = $kernel->handle(
+    $request = Illuminate\Http\Request::capture()
+)->send();
+
+$kernel->terminate($request, $response);
