@@ -2,7 +2,6 @@
 
 define('LARAVEL_START', microtime(true));
 
-// Create /tmp directories before anything
 foreach ([
     '/tmp/storage/framework/views',
     '/tmp/storage/framework/cache/data',
@@ -15,9 +14,19 @@ foreach ([
 
 require __DIR__ . '/../vendor/autoload.php';
 
-$app = require_once __DIR__ . '/../bootstrap/app.php';
-
-// Pre-bind view service before kernel boots
-$app->register(\Illuminate\View\ViewServiceProvider::class);
-
-$app->handleRequest(Illuminate\Http\Request::capture());
+try {
+    $app = require_once __DIR__ . '/../bootstrap/app.php';
+    $app->handleRequest(Illuminate\Http\Request::capture());
+} catch (\Throwable $e) {
+    http_response_code(500);
+    header('Content-Type: text/plain');
+    echo "PRIMARY ERROR:\n";
+    echo get_class($e) . "\n";
+    echo $e->getMessage() . "\n";
+    echo "File: " . $e->getFile() . ":" . $e->getLine() . "\n";
+    echo "\nPrevious:\n";
+    if ($e->getPrevious()) {
+        echo get_class($e->getPrevious()) . ": " . $e->getPrevious()->getMessage() . "\n";
+    }
+    exit;
+}
