@@ -27,18 +27,5 @@ return Application::configure(basePath: dirname(__DIR__))
         //
     })
     ->withExceptions(function (Exceptions $exceptions) {
-        // Intercept global exceptions on Vercel to extract the true underlying boot failure
-        if (env('VERCEL_JOB_ID') || env('NOW_REGION')) {
-            $exceptions->render(function (\Throwable $e) {
-                header('Content-Type: text/plain', true, 500);
-                echo "=========================================\n";
-                echo "   CRITICAL CORE BOOT EXCEPTION REVEALED \n";
-                echo "=========================================\n";
-                echo "TRUE ERROR: " . $e->getMessage() . "\n";
-                echo "FILE: " . $e->getFile() . "\n";
-                echo "LINE: " . $e->getLine() . "\n\n";
-                echo "STACK TRACE:\n" . $e->getTraceAsString() . "\n";
-                exit(1);
-            });
-        }
+        // Standard production exception handling continues here cleanly
     })->create();
