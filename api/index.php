@@ -33,6 +33,11 @@ $app = require_once __DIR__ . '/../bootstrap/app.php';
 
 $app->useStoragePath('/tmp/storage');
 
+// ─── OPTIMIZED RECOVERY FIX ───
+// Force-register only the native, standard view service core package
+$app->register(\Illuminate\View\ViewServiceProvider::class);
+// ──────────────────────────────
+
 $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 $request = Illuminate\Http\Request::capture();
 $response = $kernel->handle($request);
