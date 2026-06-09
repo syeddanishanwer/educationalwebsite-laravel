@@ -8,6 +8,7 @@ foreach ([
     '/tmp/storage/framework/sessions',
     '/tmp/storage/logs',
     '/tmp/storage/app',
+    '/tmp/bootstrap/cache',
 ] as $dir) {
     if (!is_dir($dir)) mkdir($dir, 0775, true);
 }
@@ -16,7 +17,10 @@ require __DIR__ . '/../vendor/autoload.php';
 
 $app = require_once __DIR__ . '/../bootstrap/app.php';
 
-// Force register all core service providers
+// Redirect bootstrap cache to writable /tmp
+$app->useStoragePath('/tmp/storage');
+$app->bootstrapPath('/tmp/bootstrap');
+
 $app->register(\Illuminate\View\ViewServiceProvider::class);
 $app->register(\Illuminate\Routing\RoutingServiceProvider::class);
 
