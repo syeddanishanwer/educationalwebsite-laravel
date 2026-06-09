@@ -17,22 +17,36 @@ foreach ($directories as $dir) {
     }
 }
 
-// Register Composer's autoloader
-require __DIR__ . '/../vendor/autoload.php';
+try {
+    // Register Composer's autoloader
+    require __DIR__ . '/../vendor/autoload.php';
 
-// Boot the native application matrix
-$app = require_once __DIR__ . '/../bootstrap/app.php';
+    // Boot the native application matrix
+    $app = require_once __DIR__ . '/../bootstrap/app.php';
 
-// Direct storage paths to the writable /tmp volume
-$app->useStoragePath('/tmp/storage');
+    // Direct storage paths to the writable /tmp volume
+    $app->useStoragePath('/tmp/storage');
 
-// Process the incoming request through the standard framework HTTP kernel
-$kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
+    // Process the incoming request through the standard framework HTTP kernel
+    $kernel = $app->make(Illuminate\Contracts\Http\Kernel::class);
 
-$response = $kernel->handle(
-    $request = Illuminate\Http\Request::capture()
-);
+    $response = $kernel->handle(
+        $request = Illuminate\Http\Request::capture()
+    );
 
-$response->send();
+    $response->send();
 
-$kernel->terminate($request, $response);
+    $kernel->terminate($request, $response);
+
+} catch (\Throwable $e) {
+    // Catch the absolute root error before Laravel handles it
+    header('Content-Type: text/plain', true, 500);
+    echo "=========================================\n";
+    echo "   RAW SEVERLESS CRASH DETECTED         \n";
+    echo "=========================================\n";
+    echo "ERROR MESSAGE: " . $e->getMessage() . "\n\n";
+    echo "FILE: " . $e->getFile() . "\n";
+    echo "LINE: " . $e->getLine() . "\n\n";
+    echo "STACK TRACE:\n" . $e->getTraceAsString() . "\n";
+    exit(1);
+}
