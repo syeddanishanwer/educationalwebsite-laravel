@@ -11,4 +11,8 @@ class PageController extends Controller
     return view('addinstructor');
 }
 
+    public function showinstructor(){
+    return view('allinstructor.blade.php');
+}
+
 }

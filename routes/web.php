@@ -26,6 +26,8 @@ Route::get('/login', function () {
 
 Route::get('/add-instructor', [PageController::class, 'addinstructor']) ->name('add.instructor');
 
+Route::get('/all-instructor', [PageController::class, 'showinstructor']) ->name('show.instructors');
+
 
 Route::post('/login-attempt', [LoginController::class, 'match'])->name('login.match');
 
