@@ -21,7 +21,10 @@ class AppServiceProvider extends ServiceProvider
     public function boot(): void
     {
         // Corrected: Using the imported Facade class path directly
-        URL::forceScheme('https');
+       // Only force HTTPS when running in production environment profiles
+        if (config('app.env') === 'production') {
+            URL::forceScheme('https');
+        }
 
         $vPath = '/tmp/storage/framework/views';
         if (!is_dir($vPath)) {

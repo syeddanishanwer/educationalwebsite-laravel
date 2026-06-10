@@ -1,9 +1,12 @@
 <?php
 
+use App\Http\Controllers\InstructorController;
 use Illuminate\Support\Facades\Route;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\LoginController;
+use App\Http\Controllers\PageController;
+
 
 // 1. Public Landing Homepage
 Route::get('/', function () {
@@ -20,7 +23,13 @@ Route::get('/login', function () {
     return view('login');
 })->name('loginpage');
 
+
+Route::get('/add-instructor', [PageController::class, 'addinstructor']) ->name('add.instructor');
+
+
 Route::post('/login-attempt', [LoginController::class, 'match'])->name('login.match');
+
+Route::post('/save-instructor', [InstructorController::class, 'save'])->name('instructor.save');
 
 // Route::post('/login-attempt', function (Request $request) {       
 //   Auth::attempt(['email' => $request->email, 'password' => $request->password]); 

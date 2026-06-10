@@ -10,5 +10,5 @@ class instructor extends Model
 {
    use HasFactory;
 
-   protected $fillable = ['name', 'img', 'designation', 'facebook_link', 'twitter_link', 'instagram_link', 'statis'];
+   protected $fillable = ['name', 'img', 'designation', 'facebook_link', 'twitter_link', 'instagram_link', 'status'];
 }

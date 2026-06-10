@@ -11,6 +11,5 @@ class LoginController extends Controller
     public function match(Request $request){
        Auth::attempt(['email' => $request->email, 'password' => $request->password]); 
          return redirect()->route('dashboard');    
-
     }
 }
