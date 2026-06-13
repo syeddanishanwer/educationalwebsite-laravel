@@ -9,9 +9,7 @@ use App\Http\Controllers\PageController;
 
 
 // 1. Public Landing Homepage
-Route::get('/', function () {
-    return view('welcome');
-})->name('homepage');
+Route::get('/', [PageController::class,'home'])->name('homepage');
 
 // 2. Protected User Dashboard Area
 Route::get('/dashboard', function () {
@@ -24,14 +22,14 @@ Route::get('/login', function () {
 })->name('loginpage');
 
 
-Route::get('/add-instructor', [PageController::class, 'addinstructor']) ->name('add.instructor');
+Route::get('/add-instructor', [PageController::class, 'addinstructor']) ->name('add.instructor')->middleware('auth');
 
-Route::get('/all-instructor', [PageController::class, 'showinstructor']) ->name('show.instructors');
+Route::get('/all-instructor', [PageController::class, 'showinstructor']) ->name('show.instructors')->middleware('auth');
 
 
 Route::post('/login-attempt', [LoginController::class, 'match'])->name('login.match');
 
-Route::post('/save-instructor', [InstructorController::class, 'save'])->name('instructor.save');
+Route::post('/save-instructor', [InstructorController::class, 'save'])->name('instructor.save')->middleware('auth');
 
 // Route::post('/login-attempt', function (Request $request) {       
 //   Auth::attempt(['email' => $request->email, 'password' => $request->password]); 
