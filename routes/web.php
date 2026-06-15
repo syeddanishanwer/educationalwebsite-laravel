@@ -43,3 +43,12 @@ Route::get('/about-us', function () {
 Route::get('/contact-us', function () {
     return view('contactus');
 })->name('contactpage');
+
+// Route to show the edit form
+Route::get('/edit-instructor/{id}', [PageController::class, 'editinstructor'])->name('instructors.edit')->middleware('auth');
+
+// Route to handle the update action
+Route::put('/update-instructor/{id}', [InstructorController::class, 'update'])->name('instructors.update')->middleware('auth');
+
+// Route to handle the delete action
+Route::delete('/delete-instructor/{id}', [InstructorController::class, 'delete'])->name('instructors.delete')->middleware('auth');

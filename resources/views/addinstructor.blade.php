@@ -34,7 +34,7 @@
                                 <span style="color: #e74c3c;">*</span></label>
                             <input type="text" name="name" required
                                 style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;"
-                                placeholder="e.g. Sarah Johnson">
+                                placeholder="Enter full name ...">
                         </div>
 
                         <!-- Designation -->
@@ -43,7 +43,7 @@
                                 <span style="color: #e74c3c;">*</span></label>
                             <input type="text" name="designation" required
                                 style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;"
-                                placeholder="e.g. Senior Web Developer, UI/UX Expert">
+                                placeholder="Enter designation ...">
                         </div>
 
                         <!-- Status -->
@@ -120,7 +120,7 @@
                     style="display: flex; justify-content: flex-end; gap: 15px; margin-top: 30px; border-top: 1px solid #e5e5e5; padding-top: 25px;">
                     <a href="{{ route('show.instructors') }}"
                         style="padding: 12px 25px; background: #e5e5e5; color: #374151; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px;">
-                        All Instructors
+                        Show Instructors
                     </a>
                     <button type="submit"
                         style="padding: 12px 30px; background: #2563eb; color: white; border: none; border-radius: 6px; cursor: pointer; font-weight: 600; font-size: 14px;">
