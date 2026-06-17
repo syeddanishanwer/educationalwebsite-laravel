@@ -36,6 +36,9 @@
                                 style="width: 100%; padding: 12px; border: 1px solid #d1d5db; border-radius: 8px; font-size: 14px;"
                                 placeholder="Enter full name ...">
                         </div>
+                        @error('fname')
+                        <p>Field name is empty</p>                                         
+                        @enderror
 
                         <!-- Designation -->
                         <div style="margin-bottom: 20px;">

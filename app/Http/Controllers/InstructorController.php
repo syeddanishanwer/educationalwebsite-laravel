@@ -9,6 +9,16 @@ class InstructorController extends Controller
 {
     public function save(Request $request)
     {
+        $request->validate([ 
+        "name"=>"required |max:50|min:5|unique:instructors,name",
+        "designation"=>"required |max:50|min:5",
+        "facebook_link"=>"nullable",
+        "twitter_link"=>"nullable",
+        "instagram_link"=>"nullable",
+        "img"=>"image",
+
+        ]);
+
         $instructor = new Instructor();
         $instructor->name = $request->name;
         $instructor->designation = $request->designation;
@@ -17,7 +27,7 @@ class InstructorController extends Controller
         $instructor->instagram_link = $request->filled('instagram_link') ? $request->instagram_link : null;
         // Handle Image Upload (Same as Edit logic)
         if ($request->hasFile('img')) {
-            $imageName = time() . '.' . $request->img->extension();
+            $imageName = time() . '_' . $request->img->extension();
             $request->img->move(public_path('uploads'), $imageName);
             $instructor->img = 'uploads/' . $imageName;
         } else {
