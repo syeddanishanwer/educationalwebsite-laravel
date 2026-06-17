@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 
-use App\Models\instructor;
+use App\Models\Instructor;
 class PageController extends Controller
 {
     public function addinstructor(){
@@ -17,15 +17,13 @@ public function showinstructor(){
 }
 
 public function home() {
-    $ins = Instructor::get();
+    $ins = Instructor::all();
     return view('welcome', compact('ins'));
 }
 
-public function editinstructor($id) 
-    {
-        $instructor = Instructor::findOrFail($id);
-        
-        return view('editinstructor', compact('instructor'));
-    }
-
+public function editinstructor(int $id) // Added 'int' type hint
+{
+    $instructor = Instructor::findOrFail($id);
+    return view('editinstructor', compact('instructor'));
+}
 }

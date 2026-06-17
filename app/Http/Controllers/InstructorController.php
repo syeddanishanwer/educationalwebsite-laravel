@@ -12,11 +12,10 @@ class InstructorController extends Controller
         $request->validate([ 
         "name"=>"required |max:50|min:5|unique:instructors,name",
         "designation"=>"required |max:50|min:5",
-        "facebook_link"=>"nullable",
-        "twitter_link"=>"nullable",
-        "instagram_link"=>"nullable",
-        "img"=>"image",
-
+        "facebook_link" => "nullable|url",
+        "twitter_link" => "nullable|url",
+        "instagram_link" => "nullable|url",
+        "img"=>"image"
         ]);
 
         $instructor = new Instructor();
@@ -42,8 +41,8 @@ class InstructorController extends Controller
         return redirect()->back()->with('success', 'Instructor Added Successfully!');
     }
 
-    public function update(Request $request, $id)
-    {
+    public function update(Request $request, int $id) // Added 'int'    
+        {
         $instructor = Instructor::findOrFail($id);
 
         // 1. Handle Image Upload
@@ -72,7 +71,7 @@ class InstructorController extends Controller
         return redirect()->route('show.instructors')->with('success', 'Instructor Updated!');
     }
 
-    public function delete($id)
+    public function delete(int $id) // Added 'int'
     {
         $instructor = Instructor::findOrFail($id);
 
